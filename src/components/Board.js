@@ -8,7 +8,8 @@ const Board = ({height, width, mines}) => {
     const [mineLocations, setMineLocations] = useState([]);
     const [gameOver, setGameOver] = useState(false)
     const [mineCounter, setMineCounter] = useState(10);
-    const [won, setWon] = useState(true) 
+    const [won, setWon] = useState(false);
+    const [startButton, setStartButton] = useState(true)
     useEffect(() => {
         //creating a board
          freshBoard()
@@ -24,7 +25,7 @@ const Board = ({height, width, mines}) => {
     const updateFlag = (e, x, y) => {
       
         e.preventDefault();
-        if(gameOver) {
+        if(gameOver || won || startButton) {
             return
         }
         let newGrid = JSON.parse(JSON.stringify(grid));
@@ -44,7 +45,7 @@ const Board = ({height, width, mines}) => {
     }
 
     const revealCell = (x, y) => {
-        if(grid[x][y].reveal || gameOver) {
+        if(grid[x][y].reveal || gameOver || startButton) {
             return;
         }
         let newGrid = JSON.parse(JSON.stringify(grid));
@@ -70,6 +71,7 @@ const Board = ({height, width, mines}) => {
         freshBoard()
         setMineCounter(10)
         setWon(false)
+        setStartButton(false)
     }
 
    return (
@@ -109,7 +111,7 @@ const Board = ({height, width, mines}) => {
                 )
     }) }
            </div>
-              { (gameOver || won)   && 
+              { (gameOver || won || startButton)   && 
                 <button onClick={restartGame}>Play</button>
         }
 

@@ -1,5 +1,9 @@
 .App {
+  margin: auto;
   text-align: center;
+  background: #f5f51c;
+  height: 500px;
+  max-width: 500px;
 }
 .cellStyle {
   width: 40px; 
