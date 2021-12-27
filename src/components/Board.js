@@ -43,18 +43,24 @@ const Board = ({height, width, mines}) => {
         setGrid(newGrid)
       
     }
-
     const revealCell = (x, y) => {
         if(grid[x][y].reveal || gameOver || startButton) {
             return;
         }
+        if(grid[x][y].flagged){
+            return
+        }
         let newGrid = JSON.parse(JSON.stringify(grid));
         if(newGrid[x][y].value === 'X'){
             for(let i = 0; i < mineLocations.length; i++) {
-                newGrid[mineLocations[i][0]][mineLocations[i][1]].revealed  = true;
-            }
-            setGrid(newGrid)
-            setGameOver(true)
+                 newGrid[mineLocations[i][0]][mineLocations[i][1]].revealed  = true;
+           
+          
+           
+        }
+            setGrid(newGrid);
+            setGameOver(true);
+            showBoard()
             
         }else{
             let newRevealBoard = revealed(newGrid, x, y, nonMineCount)
@@ -62,18 +68,34 @@ const Board = ({height, width, mines}) => {
             setNonMineCount(newRevealBoard.newNonMinesCount);
             if(newRevealBoard.newNonMinesCount === 0){
                 setWon(true)
+                showBoard()
             }
         }
         
     }
     const restartGame = () => {
         setGameOver(false);
-        freshBoard()
-        setMineCounter(10)
-        setWon(false)
-        setStartButton(false)
+        freshBoard();
+        setMineCounter(10);
+        setWon(false);
+        setStartButton(false);
     }
+console.log(grid)
 
+const showBoard = () => {
+    let newGrid = JSON.parse(JSON.stringify(grid));
+    newGrid.map((data) => {
+        data.map((dataItem) => {
+            if(dataItem.flagged && dataItem.value === "X"){
+                dataItem.revealed = false
+            }else{
+                dataItem.revealed = true;
+            }
+            
+        })
+    })
+    setGrid(newGrid)
+}
    return (
        <div>
            {
