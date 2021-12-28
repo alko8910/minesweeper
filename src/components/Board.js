@@ -30,7 +30,7 @@ const Board = ({height, width, mines}) => {
         }
         let newGrid = JSON.parse(JSON.stringify(grid));
         console.log(newGrid[x][y])
-        if(mineCounter >= 0){
+        if(mineCounter > 0){
             if(!newGrid[x][y].flagged){
                 newGrid[x][y].flagged = true;
                 setMineCounter(mineCounter - 1)
@@ -39,6 +39,10 @@ const Board = ({height, width, mines}) => {
                newGrid[x][y].flagged = false
                 setMineCounter(mineCounter + 1)
             }
+        }
+        if(mineCounter === 0 && newGrid[x][y].flagged === true){
+            newGrid[x][y].flagged = false
+                setMineCounter(mineCounter + 1)
         }
         setGrid(newGrid)
       
@@ -98,7 +102,8 @@ const showBoard = () => {
 }
    return (
        <div>
-           {
+          <div className='div-change'> 
+              {
                 gameOver  &&
                <p className='message'>You Lost</p>
            }
@@ -109,6 +114,7 @@ const showBoard = () => {
            { mineCounter >= 0 &&
            <p className='message'>Mines remaing: {mineCounter}</p>
            }
+           </div>
            <div style= {{
                display:'flex',
                flexDirection:"column",

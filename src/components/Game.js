@@ -3,7 +3,7 @@ import Board from './Board'
 const Game = () => {
     const height = 8;
     const width = 8;
-    const mines = 10;
+    const mines = 1;
     return (
         <div>
             <Board 
