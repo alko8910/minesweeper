@@ -29,7 +29,10 @@ const Board = ({height, width, mines}) => {
             return
         }
         let newGrid = JSON.parse(JSON.stringify(grid));
-        console.log(newGrid[x][y])
+    
+        if(newGrid[x][y].revealed){
+            return;
+        }
         if(mineCounter > 0){
             if(!newGrid[x][y].flagged){
                 newGrid[x][y].flagged = true;
@@ -37,13 +40,15 @@ const Board = ({height, width, mines}) => {
                 
             }else{
                newGrid[x][y].flagged = false
-                setMineCounter(mineCounter + 1)
+               setMineCounter(mineCounter + 1)
+                
             }
         }
         if(mineCounter === 0 && newGrid[x][y].flagged === true){
             newGrid[x][y].flagged = false
                 setMineCounter(mineCounter + 1)
         }
+       
         setGrid(newGrid)
       
     }
@@ -58,9 +63,7 @@ const Board = ({height, width, mines}) => {
         if(newGrid[x][y].value === 'X'){
             for(let i = 0; i < mineLocations.length; i++) {
                  newGrid[mineLocations[i][0]][mineLocations[i][1]].revealed  = true;
-           
-          
-           
+             
         }
             setGrid(newGrid);
             setGameOver(true);
@@ -72,6 +75,7 @@ const Board = ({height, width, mines}) => {
             setNonMineCount(newRevealBoard.newNonMinesCount);
             if(newRevealBoard.newNonMinesCount === 0){
                 setWon(true)
+                
                 showBoard()
             }
         }
@@ -84,22 +88,24 @@ const Board = ({height, width, mines}) => {
         setWon(false);
         setStartButton(false);
     }
-console.log(grid)
 
-const showBoard = () => {
-    let newGrid = JSON.parse(JSON.stringify(grid));
-    newGrid.map((data) => {
-        data.map((dataItem) => {
-            if(dataItem.flagged && dataItem.value === "X"){
-                dataItem.revealed = false
-            }else{
-                dataItem.revealed = true;
+
+    const showBoard = () => {
+        let newGrid = JSON.parse(JSON.stringify(grid));
+        newGrid.map((data) => {
+            data.map((dataItem) => {
+                if(dataItem.flagged && dataItem.value === "X"){
+                    dataItem.revealed = false;
+                }else{
+                    dataItem.revealed = true;
+                }
+            
             }
             
+            )
         })
-    })
-    setGrid(newGrid)
-}
+        setGrid(newGrid)
+    }
    return (
        <div>
           <div className='div-change'> 
